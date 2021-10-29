@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Document</title>
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300&display=swap" rel="stylesheet">
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Josefin Sans', sans-serif;
+        }
+
+        .mainDiv{
+            background: #3498db;
+            height: 100vh;
+            width: 100%;
+            position: relative;
+        }
+
+        .centerDiv{
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+        h1{
+            text-transform: capitalize;
+            margin-bottom: 30px;
+            text-shadow: 1px 2px 3px #2980b9;
+            font-size: 2.1rem;
+        }
+
+        h2{
+            text-align: center;
+        }
+
+        textarea{
+            background-color: #444;
+            box-shadow: 0 0 1px rgba(0,0,0,0.5);
+            border-radius: 10px 10px 0 0;
+            border: 20px solid #34495e;
+            color: white;
+            font-size: 1.3rem;
+        }
+
+        .mainbtn{
+            padding: 10px 20px;
+            border-radius: 20px;
+            border: 5px solid #2980b9;
+            background: #ecf0f1;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="mainDiv">
+        <div class="centerDiv">
+            <h1>Welcome to typingSpeed</h1>
+            <h2 id = "msg"></h2>
+            <br>
+            <textarea id = "mywords" rows="10" cols="100" placeholder="Hello there, Type well"></textarea>
+            <br>
+            <button id = "btn" class="mainbtn">Start</button>
+            <br>
+            <div>
+                <footer sty>Created With ❤ By Suparn </footer>
+            </div>
+        </div>
+        
+    </div>
+    
+    <script>
+
+        const setOfWords = [
+            "Hi, My Name is Suparn",
+            "I am trying to be a web developer",
+            "This typing master gane is is a practice of HTML, CSS and JS",
+            "If you want source code, head towards my Github profile."
+        ]
+
+        const msg = document.getElementById('msg');
+        const typedWords = document.getElementById('mywords');
+        const btn = document.getElementById('btn');
+
+        let startTime, endTime;
+
+        const playGame = () => {
+            let randomNumber = Math.floor(Math.random()*setOfWords.length)
+            msg.innerText = setOfWords[randomNumber];
+            let date = new Date();
+            startTime = date.getTime();
+            btn.innerHTML = 'Done';
+        }
+
+        const endPlay = () => {
+            let date = new Date();
+            endTime = date.getTime();
+            let totalTime = ((endTime - startTime) / 1000)
+
+            let totalStr = typedWords.value;
+            let wordCount = wordCounter(totalStr);
+
+            let speed = Math.round((wordCount / totalTime) * 60);
+
+            let finalMsg =" You typed total at "  +speed+ " words per minute "
+            
+            finalMsg += compareWords(msg.innerText, totalStr);
+
+            msg.innerText = finalMsg;
+
+
+        }
+
+        const compareWords = (str1, str2) => {
+            let words1 = str1.split(" ");
+            let words2 = str2.split(" ");
+
+            let cnt = 0;
+
+            words1.forEach(function(item, index){
+                if(item == words2[index]){
+                    cnt++;
+                }
+            })
+
+            let errWords = (words1.length - cnt);
+
+            return cnt + " correct out of " + words1.length + " words and the total number of error are " + errWords + ".";
+        }
+
+        const wordCounter = (str) => {
+            let res = str.split(" ").length;
+            return res;
+        }
+
+        btn.addEventListener('click', function(){
+            if(this.innerText == 'Start'){
+                typedWords.disabled = false;
+                playGame();
+            }else if(this.innerText == 'Done'){
+                typedWords.disabled = true;
+                btn.innerText = 'Start';
+                endPlay();
+            }
+        })
+
+    </script>
+    
+    
+</body>
+</html>
